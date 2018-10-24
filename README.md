@@ -1,1 +1,1 @@
-# Video Labeling Tool For Action Detection
+# Video Labeling Tool for Action Detection
