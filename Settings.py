@@ -1,17 +1,20 @@
 import tkinter as tk
 
 
-class SettingsController(tk.Frame):
+class SettingsControllerFrame(tk.LabelFrame):
     def __init__(self, master, *args, **kwargs):
-        self.settings_frame = tk.LabelFrame(master, text="Settings", bg="red", width=250, height=200)
-        self.settings_frame.grid(row=1, column=1)
+        tk.LabelFrame.__init__(self, master, *args, **kwargs)
 
-        self.load_video_button = tk.Button(self.settings_frame, text="Load Video")
-        self.load_video_button.place(x=10, y=10, height=40, width=100)
+        self.button_holder_frame = tk.Frame(self)
+        self.load_video_button = tk.Button(self.button_holder_frame, text="Load Video")
+        self.load_video_button.pack()
+        self.button_holder_frame.place(relx=0.5, rely=0.25, anchor=tk.CENTER)
 
-        self.fps_label = tk.Label(self.settings_frame, text="Playing FPS:")
-        self.fps_label.place(x=10, y=10 * 2 + 40, height=40, width=100)
+        self.fps_holder_frame = tk.Frame(self, pady=10)
+        self.fps_label = tk.Label(self.fps_holder_frame, text="Playing FPS:")
+        self.fps_label.pack(side=tk.LEFT, fill="both")
 
-        self.fps_entry = tk.Entry(self.settings_frame, justify=tk.CENTER)
-        self.fps_entry.place(x=10*2+100, y=10 * 2 + 40, height=40, width=100)
+        self.fps_entry = tk.Entry(self.fps_holder_frame, justify=tk.CENTER)
+        self.fps_entry.pack(side=tk.LEFT)
+        self.fps_holder_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 

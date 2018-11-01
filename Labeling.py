@@ -1,10 +1,12 @@
 import tkinter as tk
 
 
-class LabelingController(tk.Frame):
+class LabelingControllerFrame(tk.LabelFrame):
     def __init__(self, master, *args, **kwargs):
-        self.labeling_frame = tk.LabelFrame(master, text="Labeling Controller", bg="green", width=250, height=200)
-        self.labeling_frame.grid(row=1, column=3)
+        tk.LabelFrame.__init__(self, master, *args, **kwargs)
 
-        self.current_frame_number_entry = tk.Button(self.labeling_frame, justify=tk.CENTER, text="Action Start")
-        self.current_frame_number_entry.place(x=75, y=10, width=100, height=40)
+        # self.labeling_frame = tk.LabelFrame(self, text="Labeling Controller", bg="green", width=250, height=200)
+        # self.labeling_frame.pack(side="right")
+
+        self.action_start_button = tk.Button(self, justify=tk.CENTER, text="Action Start")
+        self.action_start_button.place(relx=0.25, rely=0.25, width=150, height=30)
