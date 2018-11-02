@@ -56,21 +56,24 @@ class VideoPlayerControllerFrame(tk.LabelFrame):
 
         current_frame = int(current_frame)
 
+        self.current_frame_number_entry.delete(0, tk.END)
+        self.current_frame_number_entry.insert(0, current_frame-int(self.master.settings_frame.fps_entry.get()))
+
         cap = cv2.VideoCapture(vid_path)
         canvas = self.master.master.master.master.canvas_frame.video_canvas
 
+        cap.set(cv2.CAP_PROP_POS_FRAMES, current_frame)
+        has_frame, frame = cap.read()
 
-        while current_frame >= 0:
-            cap.set(cv2.CAP_PROP_POS_FRAMES, current_frame)
-            current_frame -= 1
-            has_frame, frame = cap.read()
+        if not has_frame:
+            return
 
-            if not has_frame:
-                break
+        # frame = cv2.resize(frame, (50, 50))
+        print("working")
+        frame = frame[:,:,::-1]
+        photo = ImageTk.PhotoImage(image=PIL.Image.fromarray(frame))
+        canvas.image = photo
+        canvas.create_image(0, 0, image=photo, anchor="nw")
 
-            frame = cv2.resize(frame, (50, 50))
-            print("working")
-            frame = frame[:,:,::-1]
-            photo = ImageTk.PhotoImage(image=PIL.Image.fromarray(frame))
-            canvas.create_image(0, 0, image=photo, anchor=tk.N)
-            break
+        if current_frame >= 0:
+            self.master.after(int(self.master.settings_frame.fps_entry.get()), self.backward_play_button_clicked)
