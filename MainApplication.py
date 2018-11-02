@@ -9,10 +9,12 @@ from LabeledActions import LabeledActionsFrame
 from ToolsFrame import ToolsFrame
 
 
+
 class MainApplication(tk.Frame):
     def __init__(self, master, *args, **kwargs):
         tk.Frame.__init__(self, master, *args, **kwargs)
 
+        self.master = master
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
@@ -48,6 +50,7 @@ class MainApplication(tk.Frame):
         # self.canvas_frame.grid(row=0, column=0, sticky=tk.N+tk.E+tk.S+tk.W)
         # self.tools_frame.grid(row=1, column=0, sticky=tk.N+tk.E+tk.S+tk.W)
         # self.labeled_actions_frame.grid(column=1, sticky=tk.N+tk.E+tk.S+tk.W )
+
 
 master = tk.Tk(className="Action recognition tool")
 MainApplication(master).pack(fill="both", expand=True)

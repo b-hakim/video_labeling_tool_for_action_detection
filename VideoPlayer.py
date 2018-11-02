@@ -1,19 +1,26 @@
 import tkinter as tk
 
+import PIL
+from PIL import Image, ImageTk
+import cv2
+from tkinter import messagebox
+
 
 class VideoPlayerControllerFrame(tk.LabelFrame):
     def __init__(self, master, *args, **kwargs):
-        # self.playing_frame = tk.LabelFrame(master, text="Play Controller", bg="white", width=300, height=200)
-        # self.playing_frame.grid(row=1, column=2)
         tk.LabelFrame.__init__(self, master, *args, **kwargs)
 
+        self.master = master
         self.current_frame_label = tk.Label(self, text="Current Frame:")
-        self.current_frame_label.place(relx=0.2, rely=0.1, anchor=tk.CENTER, width=100, height=25)
+        self.current_frame_label.place(relx=0.2, rely=0.1, anchor=tk.CENTER,
+                                       width=100, height=25)
 
         self.current_frame_number_entry = tk.Entry(self, justify=tk.CENTER)
         self.current_frame_number_entry.place(relx=0.5, rely=0.1, anchor=tk.CENTER, width=50, height=25)
 
-        self.backward_play_button = tk.Button(self, text="<<")
+        self.current_frame_number_entry.insert(tk.END, "30")
+
+        self.backward_play_button = tk.Button(self, text="<<", command=self.backward_play_button_clicked)
         self.backward_play_button.place(relx=0.25, rely=0.3, anchor=tk.CENTER)
 
         self.pause_button = tk.Button(self, text="||")
@@ -32,4 +39,38 @@ class VideoPlayerControllerFrame(tk.LabelFrame):
         self.step_forward_button.place(relx=0.75, rely=0.5, anchor=tk.CENTER)
 
 
+    def backward_play_button_clicked(self):
+        ret = True
+        vid_path = self.master.settings_frame.video_path
+        current_frame = self.current_frame_number_entry.get()
 
+        if vid_path == "":
+            messagebox.showinfo("Error Loading Video", "Kindly Select a Video First")
+            return
+        elif not current_frame.isdigit():
+            messagebox.showinfo("Error Loading Frame", "Kindly Select a specific Frame Index")
+            return
+        elif int(current_frame)<0:
+            messagebox.showinfo("Error Loading Frame", "Kindly Select a correct Frame Index")
+            return
+
+        current_frame = int(current_frame)
+
+        cap = cv2.VideoCapture(vid_path)
+        canvas = self.master.master.master.master.canvas_frame.video_canvas
+
+
+        while current_frame >= 0:
+            cap.set(cv2.CAP_PROP_POS_FRAMES, current_frame)
+            current_frame -= 1
+            has_frame, frame = cap.read()
+
+            if not has_frame:
+                break
+
+            frame = cv2.resize(frame, (50, 50))
+            print("working")
+            frame = frame[:,:,::-1]
+            photo = ImageTk.PhotoImage(image=PIL.Image.fromarray(frame))
+            canvas.create_image(0, 0, image=photo, anchor=tk.N)
+            break
