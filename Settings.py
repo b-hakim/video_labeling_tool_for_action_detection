@@ -25,16 +25,22 @@ class SettingsControllerFrame(tk.LabelFrame):
         self.fps_entry.insert(0, "30")
 
         # self.fps_holder_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+        # self.rotation_holder_frame = tk.Frame(self, pady=10)
+        # # self.rotation_180 =
+        # self.rotation_holder_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
         self.video_cap = None
         self.initial_dir = '/'
 
     def load_video_click(self):
         self.video_cap = None
 
-        # self.video_path = filedialog.askopenfilename(initialdir=self.initial_dir, title="Select file",
-        #                                       filetypes=(("Video files", "*.mp4"), ("all files", "*.*")))
-
         self.video_path = "/home/bassel/data/office-actions/raw_data/mobile/20181020_161703.mp4"
+
+        self.video_path = filedialog.askopenfilename(initialdir=self.initial_dir, title="Select file",
+                                              filetypes=(("Video files", "*.mp4"), ("all files", "*.*")))
+
 
         self.initial_dir = os.path.dirname(self.video_path)
 
