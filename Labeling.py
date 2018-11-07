@@ -41,7 +41,7 @@ class LabelingControllerFrame(tk.LabelFrame):
         for id, class_name in self.list_actions:
             matches = list(filter(lambda x:int(x[0]) == id, self.started_actions))
             if  len(matches) > 0:
-                started_action_list.append(matches[0])
+                started_action_list.extend(matches)
 
         self.master.playing_controller_frame.pause_button_clicked()
         ActionSelectionWindow(started_action_list, self.append_action_to_listbox)
