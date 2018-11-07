@@ -4,6 +4,8 @@ from tkinter import filedialog
 
 import cv2
 
+import Utilities as utl
+
 
 class SettingsControllerFrame(tk.LabelFrame):
     def __init__(self, master, *args, **kwargs):
@@ -46,3 +48,6 @@ class SettingsControllerFrame(tk.LabelFrame):
 
         if self.video_path != "" and self.video_path != ():
             self.video_cap = cv2.VideoCapture(self.video_path)
+
+        canvas = self.master.master.master.master.canvas_frame.video_canvas
+        utl.update_canvas_from_cv_image(canvas, self.video_cap.read()[1])

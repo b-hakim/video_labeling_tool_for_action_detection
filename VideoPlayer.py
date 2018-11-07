@@ -20,7 +20,7 @@ class VideoPlayerControllerFrame(tk.LabelFrame):
         self.current_frame_number_entry = tk.Entry(self, justify=tk.CENTER)
         self.current_frame_number_entry.place(relx=0.5, rely=0.1, anchor=tk.CENTER, width=50, height=25)
 
-        self.current_frame_number_entry.insert(tk.END, "30")
+        self.current_frame_number_entry.insert(tk.END, "0")
 
         self.backward_play_button = tk.Button(self, text="<<", command=self.backward_play_button_clicked)
         self.backward_play_button.place(relx=0.25, rely=0.3, anchor=tk.CENTER)
@@ -113,7 +113,6 @@ class VideoPlayerControllerFrame(tk.LabelFrame):
         if self.playing_mode == PLAYING_MODE.FORWARD:
             return
 
-        self.playing_mode=PLAYING_MODE.FORWARD
         cap = self.master.settings_frame.video_cap
         canvas = self.master.master.master.master.canvas_frame.video_canvas
 
@@ -134,6 +133,8 @@ class VideoPlayerControllerFrame(tk.LabelFrame):
         if int(current_frame) < 0:
             messagebox.showinfo("Error Loading Frame", "Kindly Select a correct Frame Index")
             return
+
+        self.playing_mode=PLAYING_MODE.FORWARD
 
         # Todo: change 200 to a variable in the settings section
         cap.set(cv2.CAP_PROP_POS_FRAMES, current_frame)
@@ -172,7 +173,6 @@ class VideoPlayerControllerFrame(tk.LabelFrame):
         self.playing_mode=PLAYING_MODE.PAUSED
 
     def backward_play_button_clicked(self):
-        self.playing_mode=PLAYING_MODE.BACKWARD
         ret = True
         cap = self.master.settings_frame.video_cap
         canvas = self.master.master.master.master.canvas_frame.video_canvas
@@ -189,9 +189,11 @@ class VideoPlayerControllerFrame(tk.LabelFrame):
 
         current_frame = int(current_frame)
 
-        if int(current_frame)<0:
-            messagebox.showinfo("Error Loading Frame", "Kindly Select a correct Frame Index")
+        if int(current_frame)==0:
+            messagebox.showinfo("Error Loading Frame", "Video Reached Beginning")
             return
+
+        self.playing_mode=PLAYING_MODE.BACKWARD
 
         # Todo: change 200 to a variable in the settings section
         batch_size = 200
