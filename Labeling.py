@@ -75,4 +75,4 @@ class LabelingControllerFrame(tk.LabelFrame):
         with open(filepath) as fw:
             for line in fw:
                 id, name = line.split(',')
-                self.list_actions.append((int(id), name))
+                self.list_actions.append((int(id), name.strip()))
