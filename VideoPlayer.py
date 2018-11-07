@@ -100,6 +100,10 @@ class VideoPlayerControllerFrame(tk.LabelFrame):
         current_frame = int(current_frame)
         current_frame -= int(step)
 
+        if current_frame < 0:
+            messagebox.showerror("Error Loading Frame", "Cannot load a negative frame index")
+            return
+
         cap.set(cv2.CAP_PROP_POS_FRAMES, current_frame)
         has_frame, frame = cap.read()
 
@@ -157,6 +161,7 @@ class VideoPlayerControllerFrame(tk.LabelFrame):
             has_frame, frame = cap.read()
 
             if not has_frame:
+                self.pause_button_clicked()
                 return
 
             # frame = video_frames[idx][:, :, ::-1]
@@ -209,9 +214,8 @@ class VideoPlayerControllerFrame(tk.LabelFrame):
         idx = len(video_frames)-1
 
         while ret:
-            ch, cw = canvas.winfo_height(), canvas.winfo_width()
-
             if current_frame < 0 or not self.playing_mode == PLAYING_MODE.BACKWARD:
+                self.pause_button_clicked()
                 return
 
             # todo: make it a parallel thread that runs before reaching the end by 50 frames
@@ -226,6 +230,7 @@ class VideoPlayerControllerFrame(tk.LabelFrame):
                 idx = len(video_frames)-1
 
                 if idx == -1:
+                    self.pause_button_clicked()
                     return
 
             # has_frame, frame = cap.read()
@@ -234,6 +239,10 @@ class VideoPlayerControllerFrame(tk.LabelFrame):
             #     return
 
             utl.update_canvas_from_cv_image(canvas, video_frames[idx])
+
+            if current_frame - 1 < 0:
+                self.pause_button_clicked()
+                return
 
             self.current_frame_number_entry.delete(0, tk.END)
             current_frame -= 1

@@ -1,6 +1,7 @@
 import os
 import tkinter as tk
 from tkinter import filedialog
+from tkinter import messagebox
 
 import cv2
 
@@ -37,6 +38,15 @@ class SettingsControllerFrame(tk.LabelFrame):
 
     def load_video_click(self):
         self.video_cap = None
+        action_listbox = self.master.master.master.master.labeled_actions_frame.action_listbox
+
+        if action_listbox.size() != 0:
+            result = messagebox.askquestion("Load New Video", "Make sure you have already saved the action labels.\n"
+                                                              "This list will be cleared when loading the new video\n"
+                                                              "Are you sure to continue?", icon='warning')
+
+            if result == "no":
+                return
 
         self.video_path = "/home/bassel/data/office-actions/raw_data/mobile/20181020_161703.mp4"
 
@@ -49,5 +59,7 @@ class SettingsControllerFrame(tk.LabelFrame):
         if self.video_path != "" and self.video_path != ():
             self.video_cap = cv2.VideoCapture(self.video_path)
 
-        canvas = self.master.master.master.master.canvas_frame.video_canvas
-        utl.update_canvas_from_cv_image(canvas, self.video_cap.read()[1])
+            canvas = self.master.master.master.master.canvas_frame.video_canvas
+            utl.update_canvas_from_cv_image(canvas, self.video_cap.read()[1])
+
+            action_listbox.delete(0,tk.END)
