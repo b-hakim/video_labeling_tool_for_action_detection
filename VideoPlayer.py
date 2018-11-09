@@ -36,7 +36,7 @@ class VideoPlayerControllerFrame(tk.LabelFrame):
 
         self.step_size_entry = tk.Entry(self, justify=tk.CENTER)
         self.step_size_entry.place(relx=0.5, rely=0.5, anchor=tk.CENTER, width=50, height=25)
-        self.step_size_entry.insert(tk.END, "1")
+        self.step_size_entry.insert(tk.END, "3")
 
         self.step_forward_button = tk.Button(self, text=">", command=self.step_forward_button_clicked)
         self.step_forward_button.place(relx=0.75, rely=0.5, anchor=tk.CENTER)
